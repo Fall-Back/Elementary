@@ -1,0 +1,17 @@
+{
+    "name": "Elementary",
+    "version": "0.0.1",
+    "homepage": "https://github.com/Fall-Back/Elementary",
+    "authors": [
+        "Andy Kirk <andy@andykirk.net>"
+    ],
+    "description": "Element-based layout patterns - no classes",
+    "main": "scss/_0-elementary.scss",
+    "ignore":[],
+    "keywords": [
+        "fallback",
+        "css"
+    ],
+    "license": "MIT",
+    "dependencies": {}
+}
