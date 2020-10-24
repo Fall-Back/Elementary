@@ -7,11 +7,9 @@
 /*
     Expand main to sill space - part of stick footer.
 */
-body > main {
+#{$es__page_main} {
     min-height: 0;
-    -webkit-flex: 1 0 auto;
-        -ms-flex: 1 0 auto;
-            flex: 1 0 auto;
+    flex: 1 0 auto;
             
     max-width: none;
     width: 100%;
@@ -24,5 +22,6 @@ body > main {
 @import '2-main/_1-header.scss';
 @import '2-main/_2-breadcrumbs.scss';
 @import '2-main/_3-content.scss';
+@import '2-main/_3-content-balancing.scss';
 @import '2-main/_4-content-sidebar.scss';
 @import '2-main/_5-content-footer.scss';
