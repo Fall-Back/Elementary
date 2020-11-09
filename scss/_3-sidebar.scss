@@ -1,6 +1,8 @@
 /*-------------------------------------------------------------------------------------------------|
 
     LAYOUT SIDEBAR
+    ==============
+
     This should be used for site-wide content. I.e. content that doesn't change from page-to-page.
     Examples include:
     * Site-wide navigation if not putting in Banner.#
@@ -14,5 +16,9 @@
 
 #{$es__page_sidebar} {
     margin: 0;
-    padding: $f__sz-m;
+
+    padding: $s__sz-m;
+    
+    color: $e__sidebar--text-color;
+    background-color: $e__sidebar--background-color;
 }

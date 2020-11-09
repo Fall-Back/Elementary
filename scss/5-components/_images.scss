@@ -1,0 +1,18 @@
+/*-------------------------------------------------------------------------------------------------|
+
+    COMPONENTS - IMAGES
+    ===================
+
+|-------------------------------------------------------------------------------------------------*/
+
+#{$es__component__images--border} {
+    border: $e__image-border;
+};
+
+#{$es__component__images--inset} {
+    padding: $e__image-inset;
+
+    border: $e__image-border;
+
+    background: $e__image-background;
+};

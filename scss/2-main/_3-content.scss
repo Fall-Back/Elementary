@@ -1,6 +1,7 @@
 /*-------------------------------------------------------------------------------------------------|
 
     CONTENT
+    =======
 
     ```
     <main> <!-- OUTER WRAPPER -->
@@ -21,8 +22,8 @@
     After the header} we want to give elements some side padding: `~ *`.
 */
 #{$es__page_main__header} ~ * {
-    padding-left: $f__sz-m;
-    padding-right: $f__sz-m;
+    padding-left: $s__sz-m;
+    padding-right: $s__sz-m;
 }
 
 
@@ -37,8 +38,9 @@
 #{$es__page_main__header--article} ~ * {
     width: 100%; /* 1 */
     max-width: 70rem;
-    margin-left: auto;
+
     margin-right: auto;
+    margin-left: auto;
 }
 
 /*
@@ -47,7 +49,21 @@
 */
 #{$es__page_main__header} ~ div {
     max-width: none;
+
+    margin-bottom: $s__sz-m;
+
     padding: 0;
+}
+
+/*
+    Figures should wither be direct children of the content container, or placed within a `div` to
+    allow them to be full-width.
+*/
+#{$es__page_main__header} ~ figure,
+#{$es__page_main__header} ~ div > figure {
+    background: $__e__content__figure-background;
+    
+    @include s__bordered($s__sz-m, 0);
 }
 
 /*
@@ -64,4 +80,3 @@
 #{$es__page_main} img {
     width: 100%;
 }
-

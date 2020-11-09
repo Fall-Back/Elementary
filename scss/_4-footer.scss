@@ -1,17 +1,36 @@
 /*-------------------------------------------------------------------------------------------------|
 
     FOOTER
+    ======
 
 |-------------------------------------------------------------------------------------------------*/
 
 #{$es__page_footer} {
     margin: 0;
-    padding: $f__sz-s;
-    
+
+    padding: $s__sz-s;
+
     font-size: 0.875em;
+
     text-align: center;
+
+    color: $e__footer--text-color;
+    background: $e__footer--background-color;
 }
 
 #{$es__page_footer} > * {
     margin-bottom: 0;
+}
+
+#{$es__page_footer} a[href] {
+    color: $e__footer--text-color;
+    
+    &:hover,
+    &:active {
+        color: lighten($e__footer--text-color, 20%);
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 $s__anchor-focus-shadow-width rgba(255,255,255, 0.5);
+    }
 }

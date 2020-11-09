@@ -1,6 +1,7 @@
 /*-------------------------------------------------------------------------------------------------|
 
     ELEMENTARY
+    ==========
 
     Expected structure for core Elementary to work:
 
@@ -34,13 +35,6 @@
 @import '_00-2-mixins.scss';
 @import '_00-3-selectors.scss';
 
-/*
-    CSS only message
-*/
-#{$es__css-only} {
-    display: none;
-}
-
 
 /*
     Sticky Footer needs this
@@ -56,11 +50,12 @@ body {
     footer behavior.
 */
 body {
+    display: flex;
+    flex-direction: column;
+
     max-width: 1080px;
 
     padding: 0;
-    display: flex;
-    flex-direction: column;
 }
 
 body > * {
@@ -74,22 +69,22 @@ body > * {
     @media only screen and (min-width:50em) {
 
         body {
-
-            width: auto;
+            display: grid;
             align-items: stretch;
 
-            display: grid;
-            /*grid-template-columns: 1fr fit-content(34%);*/
-            grid-template-columns: 3fr 1fr;
-            grid-template-rows: max-content auto max-content;
+            width: auto;
 
-            min-height: 100%;
             height: auto;
+            min-height: 100%;
+
+            grid-template-columns: $e__main-sidebar-balance;
+            grid-template-rows: max-content auto max-content;
         }
 
         #{$es__page_banner},
         #{$es__page_footer} {
-            padding: $f__sz-s;
+            padding: $s__sz-s;
+
             grid-column: 1 / -1;
         }
 
@@ -133,8 +128,7 @@ body > * {
 @import '_2-main.scss';
 @import '_3-sidebar.scss';
 @import '_4-footer.scss';
-
-
+@import '_5-components.scss';
 
 
 
@@ -143,7 +137,7 @@ body > * {
 /*
     Greybox
 */
-
+/*
 #{$es__page_banner},
 #{$es__page_footer} {
     background: #ddd;
@@ -153,12 +147,13 @@ body > aside {
     background: #ccc;
 }
 
-
+/*
 main > div > ul > li > a[href],
 main > div > ul > li > article {
 
-    padding: $f__sz-m;
+    padding: $s__sz-m;
     background: #ddd;
     display: block;
     margin: 0;
 }
+*/
