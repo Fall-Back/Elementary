@@ -7,6 +7,8 @@
 
 $e__ojbect_highlight: 0 0 0 $s__sz-xs rgba(255,255,255,.4), 0 0 0 $s__sz-s rgba(0,0,0,.2) !default;
 
+$e__body_max-width: 1080px !default;
+
 /*-------------------------------------------------------------------------------------------------|
 
     BANNER
@@ -39,47 +41,51 @@ $e__logo--invert: true !default;
 
 // Colours:
 
-$e__nav-bar--base-ui-color:                $e__banner--base-ui-color !default;
-$e__nav-bar--base-text-color:              #fff !default;
+$e__nav-bar--base-ui-color:                 $e__banner--base-ui-color !default;
+$e__nav-bar--base-text-color:               #fff !default;
 
 
-//$e__nav-bar--background-color:             $e__nav-bar--base-ui-color !default;
-$e__nav-bar--background-color:             transparent !default;
+//$e__nav-bar--background-color:              $e__nav-bar--base-ui-color !default;
+$e__nav-bar--background-color:              transparent !default;
 
-//$e__nav-bar__link--color:                  #fff !default;
-$e__nav-bar__link--color:                  $e__nav-bar--base-text-color !default;
-$e__nav-bar__link--color--alt:             $e__nav-bar__link--color !default;
-$e__nav-bar__link--background-color:       rgba(0,0,0,0.2) !default;
-$e__nav-bar__link--background-color--alt:  rgba(255,255,255,0.08) !default;
-$e__nav-bar__link--background-color--alt2: rgba(0,0,0,0.4) !default;
+//$e__nav-bar__link--color:                   #fff !default;
+$e__nav-bar__link--color:                   $e__nav-bar--base-text-color !default;
+$e__nav-bar__link--color--alt:              $e__nav-bar__link--color !default;
+$e__nav-bar__link--background-color:        rgba(0,0,0,0.2) !default;
+$e__nav-bar__link--background-color--alt:   rgba(255,255,255,0.08) !default;
+$e__nav-bar__link--background-color--alt2:  rgba(0,0,0,0.6) !default;
 
-$e__nav-bar__link--border-color:           rgba(255,255,255,0.2) !default;
-$e__nav-bar__link--border-style:           solid !default;
-$e__nav-bar__link--border-width:           1px !default;
-$e__nav-bar__link--border-radius:          $s__sz-xs !default;
+$e__nav-bar__link--border-color:            rgba(255,255,255,0.2) !default;
+$e__nav-bar__link--border-style:            solid !default;
+$e__nav-bar__link--border-width:            1px !default;
+$e__nav-bar__link--border-radius:           $s__sz-xs !default;
 
-$e__nav-bar__link--spacing:                $s__sz-s !default;
-
-
-$e__sub-nav--background-color:             darken($e__nav-bar--base-ui-color, 20%) !default;
-
-$e__sub-nav__link--border-color:           rgba(255,255,255,0.3) !default;
-$e__sub-nav__link--border-style:           dashed !default;
-$e__sub-nav__link--border-width:           1px !default;
+$e__nav-bar__link--spacing:                 $s__sz-s !default;
 
 
-$e__sub-nav__link--color:                  $e__nav-bar__link--color !default;
-$e__sub-nav__link--color--alt:             $e__sub-nav__link--color !default;
-$e__sub-nav__link--background-color:       $e__sub-nav--background-color !default;
-$e__sub-nav__link--background-color--alt:  lighten($e__sub-nav__link--background-color, 10%) !default;
+$e__nav-bar__collapsible--background-color: lighten($e__banner--background-color, 5%) !default;
+
+
+$e__sub-nav--background-color:              darken($e__nav-bar--base-ui-color, 20%) !default;
+
+$e__sub-nav__link--border-color:            rgba(255,255,255,0.3) !default;
+$e__sub-nav__link--border-style:            dashed !default;
+$e__sub-nav__link--border-width:            1px !default;
+
+
+$e__sub-nav__link--color:                   $e__nav-bar__link--color !default;
+$e__sub-nav__link--color--alt:              $e__sub-nav__link--color !default;
+$e__sub-nav__link--background-color:        $e__sub-nav--background-color !default;
+$e__sub-nav__link--background-color--alt:   lighten($e__sub-nav__link--background-color, 10%) !default;
+
 
 // Sizes:
 
-$e__nav-bar--font-size:                    $s__base-font-size !default;
-$e__nav-bar--height:                       ($s__base-em-ratio * 1.5em) !default;
-$e__nav-bar--spacing:                      ($e__nav-bar--height / 8) !default;
-$e__nav-bar--margin-bottom:                0 !default;
-$e__nav-bar__title--padding:               0 !default;
+$e__nav-bar--font-size:                     $s__base-font-size !default;
+$e__nav-bar--height:                        ($s__base-em-ratio * 1.5em) !default;
+$e__nav-bar--spacing:                       ($e__nav-bar--height / 8) !default;
+$e__nav-bar--margin-bottom:                 0 !default;
+$e__nav-bar__title--padding:                0 !default;
 
 
 /*-------------------------------------------------------------------------------------------------|
@@ -92,7 +98,15 @@ $e__nav-bar__title--padding:               0 !default;
 // Grid
 // Allow main position to be set based on actually markup in use:
 $e__main-position: 3 !default;
-$e__main-sidebar-balance: 5fr 2fr !default;
+
+$e__main-sidebar-left-balance: 5 !default;
+$e__main-sidebar-right-balance: 2 !default;
+
+$e__main-sidebar-balance: #{$e__main-sidebar-left-balance}fr #{$e__main-sidebar-right-balance}fr !default;
+
+$e__main-sidebar-balance-factor: $e__main-sidebar-left-balance / ($e__main-sidebar-left-balance + $e__main-sidebar-right-balance) !default;
+$e__main-width-breakpoint: $e__body_max-width  / $e__main-sidebar-balance-factor !default;
+$e__main-sidebar-max-width: $e__main-sidebar-balance-factor * 100% !default;
 
 $e__main--text-color: $s__base-text-color !default;
 $e__main--background-color: #fff !default;
@@ -118,6 +132,7 @@ $e__listing__display-type: false !default; // false | grid | balance-top
 $e__listing__gutter: $s__sz-m !default;
 
 $e__listing__item--basis: calc(100% - #{$e__listing__gutter}) !default;
+$e__listing__item--min-width: none !default;
 $e__listing__item--backgroud-color: transparent !default;
 
 
