@@ -3,33 +3,91 @@
     ELEMENTARY SELECTORS
     ============================================================================================
 
-    Elementary relies solely on context and relative DOM position. This is why it should only be
-    for 'light' projects, where there isn't much variety and patterns can be closely adhered to.
+    IMPORTANT: READ BEFORE MODIFYING
+    --------------------------------
+
+    This file defines the HTML conventions used to activate Elementary's presentation patterns.
+
+    Each selector is accompanied by documentation explaining the expected HTML structure and how the
+    pattern is intended to work.
+
+    The default selectors are designed to work together. Some selectors depend on others, and
+    changing one may affect multiple patterns.
+
+
+    SELECTOR ARCHITECTURE
+    --------------------
+
+    Page-structure selectors describe interconnected HTML regions. Their relationships are
+    intentional and must be considered when changing the underlying selectors.
+
+    Component selectors identify reusable presentation patterns. They are independently
+    configurable, although their default selectors may reference page-structure selectors for
+    scoping.
+
+    Internal descendant and sibling relationships remain in the implementation modules rather than
+    being individually configurable.
+
+
+    CUSTOMISING SELECTORS — PROCEED WITH CAUTION
+    --------------------------------------------
+
+    You can replace Elementary's default selectors with your own conventions, including class-based
+    selectors.
+
+    However, changing selectors may:
+
+      - Alter which HTML structures activate a pattern.
+      - Cause patterns to overlap or conflict.
+      - Break relationships between dependent selectors.
+      - Prevent expected styles from being applied.
+
+    Only customise selectors when you understand the relevant HTML conventions and their
+    dependencies.
+
+    For visual customisation, use Elementary's configuration and CSS custom properties instead.
+    Changing selectors is not normally necessary.
+
+    ---
+
+    Elementary relies on context and relative DOM position. This is why it should only be used for
+    'lite' projects, where there isn't much variety and patterns can be closely adhered to.
 
     With that in mind, if the conventions are learned, there is some flexibility in the system,
-    particularly in regards to the extract DOM elements that are used, so long as any changes to
-    the selectors below are carefully considered so as not to introduce conflicts.
+    particularly in regards to the exact DOM elements that are used, so long as any changes to
+    the selectors below are carefully considered so as not to introduce conflicts, changes to the
+    elements used can work.
 
 
-    Conventions
+    CONVENTIONS
     -----------
 
     DIV
-        DIV's are semantically meaningless/neutral as far as AT is concerned, but since 'div' is
+        DIVs are semantically meaningless/neutral as far as AT is concerned, but since 'div' is
         short for DIVIDER it makes logical sense to the HTML author that it is a division of content
         and thus is appropriate for situations where content may need to be visually separated from
-        it's surroundings.
+        its surroundings.
 
-    Specificity
+    SPECIFICITY
     -----------
 
     Some of the selectors may look overly specific, but it's really important in such a fragile
     system to be as specific as possible; to really say exactly what we mean.
-    For example, on a Listing page when writing the selector we could could say:
+    For example, on a Listing page when writing the selector we could say:
     "Any `ul` that is a direct child of the inner wrapper should be a Gallery"
     This would be `div > ul`. However, we use `div > header ~ ul` because what we really mean to say
     is "Any `ul` AFTER the `header`", because if there was a list BEFORE the `header` for some
     reason, it will not need to be a Gallery.
+
+
+    Note:
+    Only expose selectors that define a meaningful, independently configurable HTML convention or
+    pattern.
+    Selectors describing internal relationships within those patterns should remain in their
+    implementation files and derive from the public selectors.
+
+    You can change which elements activate a pattern, but you remain responsible for preserving the
+    structural relationships that the pattern expects.
 
 |-------------------------------------------------------------------------------------------------*/
 
@@ -53,10 +111,13 @@
     ```
 |-------------------------------------------------------------------------------------------------*/
 
-//$es__css-only: "body > div:first-of-type" !default;
-//$es__css-only: "[data-css-only=\"true\"]" !default;
 
-$es_scope: "[data-elementary]" !default;
+@use "sass:map";
+@use "sass:selector";
+
+
+$es_scope: "html[data-elementary]" !default;
+
 
 /*-------------------------------------------------------------------------------------------------|
 
@@ -69,6 +130,7 @@ $es_scope: "[data-elementary]" !default;
     <body>
         ...
         <header/>
+        ?<aside/>?
         <main/>
         ?<aside/>?
         <footer>
@@ -80,15 +142,60 @@ $es_scope: "[data-elementary]" !default;
         A fairly typical page banner where you'd expect to find a logo, primary navigation,
         search, and maybe Calls to Action.
 
+        ```
+        <body>
+            ...
+            <header>
+                <fieldset>
+                    ...
+                </fieldset>
+            </header>
+            ...
+        </body>
+        ```
+
     MAIN
         The main content of the page. This may be one of several types (more on that later);
         those types are patterns in their own right and should be declared with their own
         unique markup.
 
+
+        ```
+        <body>
+            <main>
+                ...
+            </main>
+            ...
+        </body>
+        ```
+
+        OR
+
+        ```
+        <body>
+            <header>
+                ...
+            </header
+            <main>
+                ...
+            </main>
+            ...
+        </body>
+        ```
+
     SIDEBAR (ASIDE)
-        Optional. It con be omitted on all or only some pages and the layout should
-        retain it's integrity. This means the DOM is quite fragile and sensitive to change so be
-        careful. More on that later.
+        Optional. They can be up to 2 - one before main and one after. Both can be omitted on all or
+        only some pages and the layout should retain its integrity. This means the DOM is quite
+        fragile and sensitive to change so be careful. More on that later.
+
+        ```
+        <body>
+        ...<header/>
+            ?<aside>?
+            <main/>
+            ?<aside>?
+        </body>
+        ```
 
     FOOTER
         This is a typical page footer and would contain the usual Copyright notice and key links
@@ -96,12 +203,37 @@ $es_scope: "[data-elementary]" !default;
 
 |-------------------------------------------------------------------------------------------------*/
 
+
+/*
+    PAGE - STRUCTURAL BUILDING BLOCKS
+    ============================================================================================
+
+    These selectors identify the fundamental elements participating
+    in Elementary's page layout.
+
+    Consumers may replace them with alternative element, class or
+    attribute selectors.
+
+    Each must be a single compound selector, without combinators
+    or comma-separated alternatives, because Elementary uses them
+    to construct parent/child and sibling relationships.
+
+    Examples:
+        main
+        .main
+        main.content
+        [data-region="main"]
+*/
+
+$es_main_element: "main" !default;
+$es_sidebar_element: "aside" !default;
+
+
 $es__page_banner:             "#{$es_scope} body > header" !default;
 $es__page_banner__inner:      "#{$es_scope} body > header > fieldset" !default;
-$es__page_main:               "#{$es_scope} body > main" !default;
-$es__page_main_after_banner:  "#{$es_scope} body > header + main" !default;
-$es__page_sidebar:            "#{$es_scope} body > aside" !default;
-$es__page_sidebar_after_main: "#{$es_scope} body > main + aside" !default;
+$es__page_main:               "#{$es_scope} body > #{$es_main_element}" !default;
+$es__page_sidebar:            "#{$es_scope} body > #{$es_sidebar_element}" !default;
+$es__page_sidebar_after_main: "#{$es_scope} body > #{$es_main_element} + #{$es_sidebar_element}" !default;
 $es__page_footer:             "#{$es_scope} body > footer" !default;
 
 
@@ -114,7 +246,11 @@ $es__page_footer:             "#{$es_scope} body > footer" !default;
 
     ```
         <header>
-            <a/>
+            <na>
+                <b>
+                    <a/>
+                </b>
+            </nav>
             ...
         </header>
     ```
@@ -189,15 +325,42 @@ $es__page_banner__navbar: "#{$es__page_banner__inner}   nav" !default;
     MAIN - HEADER
     --------------------------------------------------------------------------------------------
 
+    Header for listing content:
+
+    ```
+    <main>
+        ...
+        <div>
+            <header>
+            </header>
+            <div role="list">
+            </div>
+        </div>
+        ...
+    </main>
+    ```
+
+    Header for article content:
+
+    ```
+    <main>
+        ...
+        <header>
+        </header>
+        <article>
+            <header>
+            </header>
+        </article>
+        ...
+    </main>
+    ```
+
 |-------------------------------------------------------------------------------------------------*/
 
 $es__page_main__header: "#{$es__page_main} > * > header" !default;
-
 $es__page_main__header--article: "#{$es__page_main} > article > header" !default;
-
 $es__page_main__header--listing: "#{$es__page_main} > div > header" !default;
 $es__page_main__header--listing__list: "#{$es__page_main__header--listing} ~ div[role=\"list\"]" !default;
-
 
 
 /*-------------------------------------------------------------------------------------------------|
@@ -205,37 +368,96 @@ $es__page_main__header--listing__list: "#{$es__page_main__header--listing} ~ div
     COMPONENTS
     --------------------------------------------------------------------------------------------
 
-    Components are meant to be reusable in any context so extra care/steps have been taken with
-    the markup and selectors.
+    Components are reusable presentation patterns identified by HTML conventions.
+
+    Most components are scoped to MAIN by default. Some also support additional contexts, such as
+    SIDEBAR or BANNER.
+
+    Consumers may replace a component's selector, but the internal HTML relationships expected by
+    that component remain unchanged.
 
 |-------------------------------------------------------------------------------------------------*/
 
+/*
+    COMPONENT SCOPE
+
+    The default scope for ordinary reusable components is MAIN.
+
+    Individual components may explicitly support additional contexts where their HTML conventions
+    require it (e.g. CARD in SIDEBAR, HERO and INFO OVERLAY in BANNER).
+
+    Advanced Sass consumers may configure this scope independently.
+*/
+$es_component_scope: $es__page_main !default;
 
 /*-------------------------------------------------------------------------------------------------|
 
     COMPONENTS - CARD
     --------------------------------------------------------------------------------------------
 
+    ```
+    <article>
+        <div>
+            ...
+        </div>
+    </article>
+    ```
+
 |-------------------------------------------------------------------------------------------------*/
 
-$es__component__card: "#{$es_scope} article > div:only-child" !default;
-//$es__component__card: "article > div:nth-child(2)" !default;
+$es__component__card: "#{$es_component_scope} article > div:only-child, #{$es__page_sidebar} article > div:only-child" !default;
 
 
 /*-------------------------------------------------------------------------------------------------|
 
-    COMPONENTS - CTA (only allowed in Cards, currently)
+    COMPONENTS - CTA
     --------------------------------------------------------------------------------------------
+
+    ```
+    <b><a/></b>
+    ```
 
 |-------------------------------------------------------------------------------------------------*/
 
-$es__component__cta: "#{$es__component__card} b > a[href]:only-child" !default;
+$es__component__cta: "#{$es_component_scope} b > a[href]:only-child, #{$es__page_sidebar} b > a[href]:only-child" !default;
 
 
 /*-------------------------------------------------------------------------------------------------|
 
     COMPONENTS - HERO
     --------------------------------------------------------------------------------------------
+
+    Hero components can be in one of 2 positions depending on the semantics of the content.
+    They can be in the page banner for landing or listing pages:
+
+    ```
+    <body>
+        ...
+        <header>
+            <fieldset>
+                <figure>
+                    HERO IS HERE
+                </figure>
+            </fieldset>
+        </header>
+        ...
+    </body>
+    ```
+
+    or they could be in the header of the main element for article content pages:
+
+    ```
+    <main>
+        <article | div>
+            <header>
+                <figure>
+                    HERO IS HERE
+                </figure>
+            </header>
+        </article | div>
+            ...
+    </main>
+    ```
 
 |-------------------------------------------------------------------------------------------------*/
 
@@ -248,6 +470,10 @@ $es__component__hero_2: "#{$es__page_main__header} > figure" !default;
     ///COMPONENTS - ICON
     --------------------------------------------------------------------------------------------
 
+    ```
+    <i><svg/></i>
+    ```
+
 |-------------------------------------------------------------------------------------------------*/
 
 ///$es__component__icon: "i > svg:only-child" !default;
@@ -258,10 +484,24 @@ $es__component__hero_2: "#{$es__page_main__header} > figure" !default;
     COMPONENTS - IMAGES
     --------------------------------------------------------------------------------------------
 
+    This pattern uses HTML semantics to provide images with <b> borders and <i> inset padding.
+    This is fudge, but a justifiable one - those elements are intended to describe stylistic
+    differences, which they do and there's no ambiguous styling visible to the users as we're
+    applying them images. If images fail to loaded and the alt-text is visible, this styling
+    does no harm.
+
+    ```
+    <b><img/></b>
+    ```
+
+    ```
+    <b><i><img/></i></b>
+    ```
+
 |-------------------------------------------------------------------------------------------------*/
 
-$es__component__images--border: "#{$es_scope} b > img:only-child" !default;
-$es__component__images--inset:  "#{$es_scope} b > i:only-child > img:only-child" !default;
+$es__component__images--border: "#{$es_component_scope} b > img:only-child" !default;
+$es__component__images--inset:  "#{$es_component_scope} b > i:only-child > img:only-child" !default;
 
 
 /*-------------------------------------------------------------------------------------------------|
@@ -269,7 +509,26 @@ $es__component__images--inset:  "#{$es_scope} b > i:only-child > img:only-child"
     COMPONENTS - INFO OVERLAY
     --------------------------------------------------------------------------------------------
 
+    INFO OVERLAY can appear in two contexts:
+
+    1. Within the page banner.
+    2. Within the main content area.
+
+    Both contexts share identical presentation rules and are combined
+    into a single configurable selector.
+
+    Te complete selector can be replaced or disabled through Sass module configuration..
+
+    ```
+    <header>
+        <figure>
+            <figcaption>
+                <details/>
+            </figcaption>
+        </figure>
+    </header>
+    ```
+
 |-------------------------------------------------------------------------------------------------*/
 
-$es__component__info-overlay: "#{$es_scope} header figcaption > details" !default;
-
+$es__component__info-overlay: "#{$es__page_banner__inner} figure > figcaption > details, #{$es_component_scope} header figure > figcaption > details" !default;
